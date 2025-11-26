@@ -13,6 +13,23 @@ public class ExecutorServiceDemo {
         // 2. Submit tasks to the executor service
         for (int i = 0; i < 1000; i++) {
             final int taskId = i;
+            /*
+               execute() comes executor interface
+               submit() comes executorService class
+
+               execute() returns nothing and takes only Runnable as an input.
+               submit() returns Future and takes Runnable or Callable as an input.
+            */
+            executor.execute(() -> {
+                System.out.println("Executing task " + taskId + " in thread: " + Thread.currentThread().getName());
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            });
+
+
             // submit() takes a Runnable and adds it to a queue.
             // An available thread from the pool will pick it up and execute it.
             executor.submit(() -> {

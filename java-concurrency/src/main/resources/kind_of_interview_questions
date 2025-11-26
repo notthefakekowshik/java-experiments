@@ -16,3 +16,13 @@
    Runnable: Its run() method is void and cannot throw checked exceptions. You use it when you don't need a task to return a result.
    Callable<V>: Its call() method returns a value of type V and can throw exceptions.
                 This is what you use when your task needs to compute something and return it.
+
+
+4. Key Differences
+Feature	
+Future
+ (Java 5)	CompletableFuture (Java 8)
+Blocking	get() is blocking. You must wait for the result.	Non-blocking composition. You can chain actions (thenAccept, thenApply) that trigger when the result is ready.
+Chaining	Not supported. You have to manage dependencies manually.	Rich API for chaining multiple async steps.
+Exception Handling	cumbersome try-catch blocks around get().	Fluent exception handling with exceptionally() or handle().
+Manual Completion	Cannot be manually completed.	Can be manually completed via complete() or completeExceptionally().

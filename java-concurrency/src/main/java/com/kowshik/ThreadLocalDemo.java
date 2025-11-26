@@ -14,8 +14,13 @@ class BankUser {
         this.name = name;
     }
 
-    public String getUserId() { return userId; }
-    public String getName() { return name; }
+    public String getUserId() {
+        return userId;
+    }
+
+    public String getName() {
+        return name;
+    }
 }
 
 /**
@@ -45,10 +50,11 @@ class TransactionContext {
         return transactionId.get();
     }
 
-    // Removes current thread from the map. Crucial cleanup method to prevent memory leaks in a thread pool environment
+    // Removes current thread from the map. Crucial cleanup method to prevent memory
+    // leaks in a thread pool environment
     /*
-        How does it lead to memory leak?
-        Let's say Alice has completed the transaction
+     * How does it lead to memory leak?
+     * Let's say Alice has completed the transaction
      */
     public static void clear() {
         currentUser.remove();
@@ -80,14 +86,16 @@ public class ThreadLocalDemo {
             TransactionContext.setCurrentUser(user);
             TransactionContext.setTransactionId(currentTransactionId);
 
-            System.out.println(Thread.currentThread().getName() + " -> Starting transaction " + currentTransactionId + " for user " + user.getName());
+            System.out.println(Thread.currentThread().getName() + " -> Starting transaction " + currentTransactionId
+                    + " for user " + user.getName());
 
             // Perform business logic without passing user or transaction ID as arguments
             BankService.executeTransfer();
 
         } finally {
             // Always clean up the thread-local context when done
-            System.out.println(Thread.currentThread().getName() + " -> Ending transaction " + TransactionContext.getTransactionId());
+            System.out.println(Thread.currentThread().getName() + " -> Ending transaction "
+                    + TransactionContext.getTransactionId());
             TransactionContext.clear();
         }
     }
@@ -103,9 +111,11 @@ class BankService {
         String txId = TransactionContext.getTransactionId();
         BankUser user = TransactionContext.getCurrentUser();
 
-        System.out.println(Thread.currentThread().getName() + " -> BankService: Executing transfer for user " + user.getName() + " (ID: " + user.getUserId() + ") with transaction ID " + txId);
+        System.out.println(Thread.currentThread().getName() + " -> BankService: Executing transfer for user "
+                + user.getName() + " (ID: " + user.getUserId() + ") with transaction ID " + txId);
 
-        // Simulate a call to another layer, like a repository or fraud detection service
+        // Simulate a call to another layer, like a repository or fraud detection
+        // service
         FraudService.checkTransaction();
     }
 }
@@ -120,7 +130,8 @@ class FraudService {
         String txId = TransactionContext.getTransactionId();
         BankUser user = TransactionContext.getCurrentUser();
 
-        System.out.println(Thread.currentThread().getName() + " -> FraudService: Checking for fraud for user " + user.getName() + " and transaction " + txId);
+        System.out.println(Thread.currentThread().getName() + " -> FraudService: Checking for fraud for user "
+                + user.getName() + " and transaction " + txId);
 
         // Simulate fraud check logic
         System.out.println(Thread.currentThread().getName() + " -> FraudService: Check passed.");
