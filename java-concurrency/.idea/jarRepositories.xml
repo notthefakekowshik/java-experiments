@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="RemoteRepositoriesConfiguration">
+    <remote-repository>
+      <option name="id" value="central" />
+      <option name="name" value="Central Repository" />
+      <option name="url" value="https://repo.maven.apache.org/maven2" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="our-archetypes-snapshots" />
+      <option name="name" value="our-archetypes-snapshots" />
+      <option name="url" value="https://nexus.workfusion.com/nexus/content/repositories/wf-archetypes-snapshots" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="wf-internal-dependencies" />
+      <option name="name" value="wf-internal-dependencies" />
+      <option name="url" value="https://nexus.workfusion.com/nexus/content/groups/public" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="wf-dependencies" />
+      <option name="name" value="wf-dependencies" />
+      <option name="url" value="https://repository.workfusion.com/content/groups/dependencies" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="thirdparty-nexus" />
+      <option name="name" value="Thirdparty Nexus repository" />
+      <option name="url" value="https://nexus.workfusion.com/nexus/content/repositories/thirdparty" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="wf-nexus-releases" />
+      <option name="name" value="wf-nexus-releases" />
+      <option name="url" value="https://nexus.workfusion.com/nexus/content/repositories/releases/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="central" />
+      <option name="name" value="Maven Central repository" />
+      <option name="url" value="https://repo1.maven.org/maven2" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="jboss.community" />
+      <option name="name" value="JBoss Community repository" />
+      <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="public-nexus" />
+      <option name="name" value="Public Nexus repository" />
+      <option name="url" value="https://nexus.workfusion.com/nexus/content/repositories/public" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="central" />
+      <option name="name" value="central" />
+      <option name="url" value="https://repo.maven.apache.org/maven2/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="our-archetypes-releases" />
+      <option name="name" value="our-archetypes-releases" />
+      <option name="url" value="https://nexus.workfusion.com/nexus/content/repositories/wf-archetypes-releases" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="wf-archetypes" />
+      <option name="name" value="wf-archetypes" />
+      <option name="url" value="https://repository.workfusion.com/content/repositories/archetypes" />
+    </remote-repository>
+  </component>
+</project>
