@@ -24,6 +24,7 @@ import java.util.concurrent.TimeUnit;
  *    - How to handle rejected execution?
  *    - What is ThreadPoolExecutor and its core parameters?
  *
+ *
  * 3. Key Differences:
  *    execute(): From Executor interface, returns void, accepts only Runnable
  *    submit(): From ExecutorService, returns Future<?>, accepts Runnable or Callable
