@@ -24,7 +24,7 @@ import java.util.concurrent.Executors;
  *    - Difference between ThreadLocal and InheritableThreadLocal
  *
  * 3. Real-world Use Cases:
- *    - Web request context (Spring's RequestContextHolder)
+ *    - Web request context (Spring's RequestHolder)
  *    - Database transaction management (Hibernate Session)
  *    - Security context (Spring Security)
  *    - User session management

@@ -58,31 +58,13 @@ public class ExecutorServiceDemo {
         // The JVM doesn't have to create and destroy threads constantly.
         ExecutorService executor = Executors.newFixedThreadPool(10);
 
-        // 2. Submit tasks to the executor service
+        // 2. Submit 100 tasks to the executor service
         for (int i = 0; i < 100; i++) {
             final int taskId = i;
-            /*
-               execute() comes executor interface
-               submit() comes executorService class
-
-               execute() returns nothing and takes only Runnable as an input.
-               submit() returns Future and takes Runnable or Callable as an input.
-            */
-            executor.execute(() -> {
-                System.out.println("Executing task " + taskId + " in thread: " + Thread.currentThread().getName());
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
-            });
-
-
-            // submit() takes a Runnable and adds it to a queue.
-            // An available thread from the pool will pick it up and execute it.
             executor.submit(() -> {
                 System.out.println("Executing task " + taskId + " in thread: " + Thread.currentThread().getName());
                 try {
+                    // Simulate work
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
@@ -106,54 +88,3 @@ public class ExecutorServiceDemo {
         System.out.println("All tasks completed.");
     }
 }
-
-
-/**
- * ANTI-PATTERN: Do not do this in a real application!
- *
- * This example demonstrates why creating a new thread for every task is inefficient:
- * - Creates 1000 threads, overwhelming the system
- * - High memory overhead (each thread ~1MB stack space)
- * - Context switching overhead degrades performance
- * - No control over thread lifecycle
- */
-class RawThreadExample {
-    public static void main(String[] args) {
-        for (int i = 0; i < 1000; i++) {
-            final int taskId = i;
-            // Create a new thread for every single task - BAD PRACTICE!
-            Thread thread = new Thread(() -> {
-                System.out.println("Executing task " + taskId + " in thread: " + Thread.currentThread().getName());
-                // Simulate work
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
-            });
-            thread.start();
-        }
-    }
-}
-
-/**
- * Runnable vs. Callable - Important Interview Concept:
- *
- * Runnable:
- * - run() method returns void
- * - Cannot throw checked exceptions
- * - Use when task doesn't need to return a result
- *
- * Callable<V>:
- * - call() method returns a value of type V
- * - Can throw checked exceptions
- * - Use when task needs to compute and return a result
- * - Works with Future to get the result asynchronously
- *
- * Example:
- * Callable<Integer> task = () -> {
- *     return 42; // Returns a result
- * };
- * Future<Integer> future = executor.submit(task);
- * Integer result = future.get(); // Blocks until result is available
- */

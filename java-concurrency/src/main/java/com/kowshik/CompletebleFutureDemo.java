@@ -1,12 +1,9 @@
 package com.kowshik;
 
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.concurrent.*;
 
 /**
  * CompletableFuture Demo - Asynchronous Programming Tutorial
@@ -47,6 +44,7 @@ import org.slf4j.LoggerFactory;
  * - exceptionally/handle: Error handling
  * - allOf/anyOf: Multiple futures coordination
  */
+
 public class CompletebleFutureDemo {
 
     private static final Logger log = LoggerFactory.getLogger(CompletebleFutureDemo.class);
@@ -58,36 +56,45 @@ public class CompletebleFutureDemo {
      * @param args command line arguments
      * @throws InterruptedException if interrupted while waiting
      */
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, ExecutionException {
         // Create our OWN dedicated thread pool
         ExecutorService myCustomExecutor = Executors.newFixedThreadPool(4);
-        log.info("Created a custom executor with 4 threads");
+        System.out.println("Created a custom executor with 4 threads.");
 
-        // Version 1: Using the default common pool (ForkJoinPool.commonPool())
+        // Version 0: The Old Way (Future)
+        // Limitation: It blocks the main thread until the result is available.
+        System.out.println("\n--- Future Demo ---");
+        Future<String> future = myCustomExecutor.submit(() -> {
+            try {
+                Thread.sleep(5000); // Simulate some work
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+            return "Future Task running in thread: " + Thread.currentThread().getName();
+        });
+
+        System.out.println("Future submitted. Main thread doing other work...");
+        // This line BLOCKS until the result is ready.
+        // We cannot chain actions or handle exceptions gracefully without try-catch
+        // here.
+        String result = future.get();
+        System.out.println("Future Result: " + result);
+        System.out.println("--- End Future Demo ---\n");
+
+        // Version 1: Using the default common pool
         CompletableFuture.supplyAsync(() -> {
             // This task will run in the ForkJoinPool.commonPool()
-            String threadName = Thread.currentThread().getName();
-            log.info("Task 1 running in common pool thread: {}", threadName);
-            return "Task running in thread: " + threadName;
-        }).thenAccept(result -> log.info("Result 1: {}", result));
+            return "Task running in thread: " + Thread.currentThread().getName();
+        }).thenAccept(System.out::println);
 
-        // Version 2: Providing OUR executor (The better way for production apps)
+        // Version 2: Providing OUR executor (The better way for serious apps)
         CompletableFuture.supplyAsync(() -> {
             // This task is guaranteed to run in OUR executor
-            String threadName = Thread.currentThread().getName();
-            log.info("Task 2 running in custom executor thread: {}", threadName);
-            return "Task running in thread: " + threadName;
-        }, myCustomExecutor).thenAccept(result -> log.info("Result 2: {}", result));
-
-        // Give tasks time to complete
-        Thread.sleep(500);
+            return "Task running in thread: " + Thread.currentThread().getName();
+        }, myCustomExecutor).thenAccept(System.out::println); // Pass the executor here
 
         // Clean up our custom executor
-        log.info("Shutting down custom executor");
         myCustomExecutor.shutdown();
-        if (!myCustomExecutor.awaitTermination(2, TimeUnit.SECONDS)) {
-            myCustomExecutor.shutdownNow();
-        }
-        log.info("Executor shut down successfully");
+        myCustomExecutor.awaitTermination(2, TimeUnit.SECONDS);
     }
 }
