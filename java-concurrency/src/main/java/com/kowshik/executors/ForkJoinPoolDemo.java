@@ -1,4 +1,4 @@
-package com.kowshik;
+package com.kowshik.executors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +11,8 @@ import java.util.concurrent.TimeUnit;
 /**
  * ForkJoinPool Demo - Work-Stealing Algorithm Tutorial
  *
- * ForkJoinPool is designed for divide-and-conquer algorithms using work-stealing.
+ * ForkJoinPool is designed for divide-and-conquer algorithms using
+ * work-stealing.
  * Workers that run out of tasks can "steal" work from other busy workers.
  *
  * Key Points:
@@ -92,7 +93,7 @@ public class ForkJoinPoolDemo {
     private static void parallelMergeSortDemo() {
         logger.info("Demo 2: Parallel Merge Sort");
 
-        int[] array = {64, 34, 25, 12, 22, 11, 90, 88, 45, 50, 23, 67, 89, 12, 56};
+        int[] array = { 64, 34, 25, 12, 22, 11, 90, 88, 45, 50, 23, 67, 89, 12, 56 };
         logger.info("Original array: {}", arrayToString(array));
 
         ForkJoinPool pool = new ForkJoinPool();
@@ -110,7 +111,7 @@ public class ForkJoinPoolDemo {
 
         ForkJoinPool pool = new ForkJoinPool();
 
-        for (int n : new int[]{10, 20, 30, 35}) {
+        for (int n : new int[] { 10, 20, 30, 35 }) {
             FibonacciTask task = new FibonacciTask(n);
             long result = pool.invoke(task);
             logger.info("Fibonacci({}) = {}", n, result);
@@ -253,8 +254,10 @@ public class ForkJoinPoolDemo {
                 }
             }
 
-            while (i < n1) arr[k++] = leftArray[i++];
-            while (j < n2) arr[k++] = rightArray[j++];
+            while (i < n1)
+                arr[k++] = leftArray[i++];
+            while (j < n2)
+                arr[k++] = rightArray[j++];
         }
     }
 
@@ -288,7 +291,8 @@ public class ForkJoinPoolDemo {
         }
 
         private long fibonacci(int n) {
-            if (n <= 1) return n;
+            if (n <= 1)
+                return n;
             long prev = 0, curr = 1;
             for (int i = 2; i <= n; i++) {
                 long next = prev + curr;
@@ -350,7 +354,8 @@ public class ForkJoinPoolDemo {
         if (array.length <= 20) {
             StringBuilder sb = new StringBuilder("[");
             for (int i = 0; i < array.length; i++) {
-                if (i > 0) sb.append(", ");
+                if (i > 0)
+                    sb.append(", ");
                 sb.append(array[i]);
             }
             sb.append("]");

@@ -13,40 +13,41 @@ import java.util.stream.Collectors;
  * INTERVIEW PREP - Key Topics:
  * =============================
  * 1. Web Crawler Design:
- *    - Breadth-first vs depth-first traversal
- *    - URL deduplication
- *    - Rate limiting to avoid overwhelming servers
- *    - Depth limiting to control crawl scope
- *    - Politeness (robots.txt, crawl delay)
+ * - Breadth-first vs depth-first traversal
+ * - URL deduplication
+ * - Rate limiting to avoid overwhelming servers
+ * - Depth limiting to control crawl scope
+ * - Politeness (robots.txt, crawl delay)
  *
  * 2. Common Interview Questions:
- *    - How to design a scalable web crawler?
- *    - How to handle duplicate URLs?
- *    - How to implement rate limiting?
- *    - How to handle errors and retries?
- *    - CompletableFuture vs traditional threading?
- *    - How to prevent infinite loops in crawling?
+ * - How to design a scalable web crawler?
+ * - How to handle duplicate URLs?
+ * - How to implement rate limiting?
+ * - How to handle errors and retries?
+ * - CompletableFuture vs traditional threading?
+ * - How to prevent infinite loops in crawling?
  *
  * 3. Concurrency Patterns:
- *    - CompletableFuture for async operations
- *    - ConcurrentHashMap for thread-safe deduplication
- *    - ThreadPoolExecutor for controlled parallelism
- *    - Rate limiter for request throttling
+ * - CompletableFuture for async operations
+ * - ConcurrentHashMap for thread-safe deduplication
+ * - ThreadPoolExecutor for controlled parallelism
+ * - Rate limiter for request throttling
  *
  * 4. Scalability Considerations:
- *    - Distributed crawling across machines
- *    - URL frontier (queue management)
- *    - DNS caching
- *    - Connection pooling
- *    - Politeness policies
+ * - Distributed crawling across machines
+ * - URL frontier (queue management)
+ * - DNS caching
+ * - Connection pooling
+ * - Politeness policies
  *
  * 5. Real-world Applications:
- *    - Search engine indexing (Google, Bing)
- *    - Price comparison sites
- *    - SEO analysis tools
- *    - Data aggregation services
+ * - Search engine indexing (Google, Bing)
+ * - Price comparison sites
+ * - SEO analysis tools
+ * - Data aggregation services
  *
- * Demonstrates a parallel web crawler using CompletableFuture for asynchronous operations.
+ * Demonstrates a parallel web crawler using CompletableFuture for asynchronous
+ * operations.
  * Features:
  * - Parallel page processing
  * - Depth-limited crawling
@@ -65,21 +66,20 @@ public class ParallelWebCrawlerDemo {
     /**
      * Creates a new parallel web crawler.
      *
-     * @param maxDepth                maximum crawl depth
-     * @param maxConcurrentRequests   maximum parallel requests
-     * @param requestsPerSecond       rate limit (requests per second)
+     * @param maxDepth              maximum crawl depth
+     * @param maxConcurrentRequests maximum parallel requests
+     * @param requestsPerSecond     rate limit (requests per second)
      */
     public ParallelWebCrawlerDemo(int maxDepth, int maxConcurrentRequests, int requestsPerSecond) {
         this.maxDepth = maxDepth;
         this.maxConcurrentRequests = maxConcurrentRequests;
         this.executorService = new ThreadPoolExecutor(
-            4,
-            maxConcurrentRequests,
-            60L,
-            TimeUnit.SECONDS,
-            new ArrayBlockingQueue<>(1000),
-            new ThreadPoolExecutor.CallerRunsPolicy()
-        );
+                4,
+                maxConcurrentRequests,
+                60L,
+                TimeUnit.SECONDS,
+                new ArrayBlockingQueue<>(1000),
+                new ThreadPoolExecutor.CallerRunsPolicy());
         this.visitedUrls = ConcurrentHashMap.newKeySet();
         this.rateLimiter = new RateLimiter(requestsPerSecond);
     }
@@ -92,11 +92,11 @@ public class ParallelWebCrawlerDemo {
      */
     public CompletableFuture<Set<String>> crawl(String startUrl) {
         return crawlPage(startUrl, 0)
-            .thenApply(ignored -> visitedUrls)
-            .exceptionally(throwable -> {
-                System.err.println("Crawling failed: " + throwable.getMessage());
-                return Collections.emptySet();
-            });
+                .thenApply(ignored -> visitedUrls)
+                .exceptionally(throwable -> {
+                    System.err.println("Crawling failed: " + throwable.getMessage());
+                    return Collections.emptySet();
+                });
     }
 
     private CompletableFuture<Void> crawlPage(String url, int depth) {
@@ -105,22 +105,21 @@ public class ParallelWebCrawlerDemo {
         }
 
         return CompletableFuture.supplyAsync(() -> {
-                rateLimiter.acquire(); // Rate limit the requests
-                return downloadPage(url);
-            }, executorService)
-            .thenApply(this::extractUrls)
-            .thenCompose(urls -> {
-                List<CompletableFuture<Void>> futures = urls.stream()
-                    .map(newUrl -> crawlPage(newUrl, depth + 1))
-                    .collect(Collectors.toList());
-                return CompletableFuture.allOf(
-                    futures.toArray(new CompletableFuture[0])
-                );
-            })
-            .exceptionally(throwable -> {
-                System.err.println("Error crawling " + url + ": " + throwable.getMessage());
-                return null;
-            });
+            rateLimiter.acquire(); // Rate limit the requests
+            return downloadPage(url);
+        }, executorService)
+                .thenApply(this::extractUrls)
+                .thenCompose(urls -> {
+                    List<CompletableFuture<Void>> futures = urls.stream()
+                            .map(newUrl -> crawlPage(newUrl, depth + 1))
+                            .collect(Collectors.toList());
+                    return CompletableFuture.allOf(
+                            futures.toArray(new CompletableFuture[0]));
+                })
+                .exceptionally(throwable -> {
+                    System.err.println("Error crawling " + url + ": " + throwable.getMessage());
+                    return null;
+                });
     }
 
     private String downloadPage(String urlString) {
@@ -129,7 +128,7 @@ public class ParallelWebCrawlerDemo {
             // Simulated page download
             Thread.sleep(100); // Simulate network delay
             return "Sample page content with links: " +
-                   "href='https://example.com' href='https://example.org'";
+                    "href='https://example.com' href='https://example.org'";
         } catch (Exception e) {
             throw new RuntimeException("Failed to download: " + urlString, e);
         }
@@ -167,13 +166,13 @@ public class ParallelWebCrawlerDemo {
      */
     public static void main(String[] args) {
         ParallelWebCrawlerDemo crawler = new ParallelWebCrawlerDemo(
-            3,           // maxDepth
-            10,         // maxConcurrentRequests
-            5           // requestsPerSecond
+                10, // maxDepth
+                10, // maxConcurrentRequests
+                5 // requestsPerSecond
         );
 
         try {
-            CompletableFuture<Set<String>> crawlFuture = crawler.crawl("https://example.com");
+            CompletableFuture<Set<String>> crawlFuture = crawler.crawl("https://leetcode.com");
             Set<String> urls = crawlFuture.get(5, TimeUnit.MINUTES);
             System.out.println("Crawled URLs: " + urls);
         } catch (Exception e) {

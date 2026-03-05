@@ -1,4 +1,4 @@
-package com.kowshik;
+package com.kowshik.CyclicBarrierDemo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,10 +49,15 @@ public class CyclicBarrierDemo {
         logger.info("Demo 1: Basic CyclicBarrier with barrier action");
 
         int parties = 3;
-        CyclicBarrier barrier = new CyclicBarrier(parties, () -> {
-            // Barrier action - runs when all threads arrive
+
+        /*
+         * you need not use this variable r, you can directly have it as an anonymous
+         * function (lambda, you did this for fun!)
+         */
+        Runnable r = () -> {
             logger.info("*** ALL THREADS ARRIVED AT BARRIER - Barrier action executing ***");
-        });
+        };
+        CyclicBarrier barrier = new CyclicBarrier(parties, r);
 
         ExecutorService executor = Executors.newFixedThreadPool(parties);
 
@@ -87,9 +92,9 @@ public class CyclicBarrierDemo {
 
         int workers = 4;
         int phases = 3;
-
+        int[] current_phase = new int[] { 0 };
         CyclicBarrier barrier = new CyclicBarrier(workers, () -> {
-            logger.info("==> Phase completed - all workers synchronized");
+            logger.info("==> Phase {} completed - all workers synchronized", ++current_phase[0]);
         });
 
         ExecutorService executor = Executors.newFixedThreadPool(workers);
@@ -105,7 +110,7 @@ public class CyclicBarrierDemo {
                         logger.info("Worker {} waiting at barrier (phase {})", workerId, phase);
                         barrier.await(); // Wait for all workers to complete this phase
 
-                        logger.info("Worker {} proceeding to next phase", workerId);
+                        logger.info("Worker {} proceeding to next phase {}", workerId, phase + 1);
                     }
                     logger.info("Worker {} completed all phases", workerId);
                 } catch (InterruptedException | BrokenBarrierException e) {
@@ -120,7 +125,8 @@ public class CyclicBarrierDemo {
 
     /**
      * Example: Matrix multiplication with parallel computation
-     * Each thread computes part of the result and waits for others before next phase
+     * Each thread computes part of the result and waits for others before next
+     * phase
      */
     static class ParallelMatrixComputation {
         private final CyclicBarrier barrier;

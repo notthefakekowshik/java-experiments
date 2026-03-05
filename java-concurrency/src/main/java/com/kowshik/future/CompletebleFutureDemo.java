@@ -1,4 +1,4 @@
-package com.kowshik;
+package com.kowshik.future;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,30 +11,30 @@ import java.util.concurrent.*;
  * INTERVIEW PREP - Key Topics:
  * =============================
  * 1. What is CompletableFuture and why use it over Future?
- *    - Non-blocking asynchronous programming
- *    - Composable and chainable operations
- *    - Exception handling with exceptionally/handle
- *    - Combining multiple futures (thenCombine, allOf, anyOf)
+ * - Non-blocking asynchronous programming
+ * - Composable and chainable operations
+ * - Exception handling with exceptionally/handle
+ * - Combining multiple futures (thenCombine, allOf, anyOf)
  *
  * 2. Common Interview Questions:
- *    - Difference between supplyAsync() and runAsync()
- *    - When to provide custom executor vs using common pool?
- *    - How to handle exceptions in CompletableFuture?
- *    - Explain thenApply() vs thenCompose() vs thenCombine()
- *    - What is the difference between thenAccept() and thenApply()?
- *    - How does CompletableFuture avoid callback hell?
+ * - Difference between supplyAsync() and runAsync()
+ * - When to provide custom executor vs using common pool?
+ * - How to handle exceptions in CompletableFuture?
+ * - Explain thenApply() vs thenCompose() vs thenCombine()
+ * - What is the difference between thenAccept() and thenApply()?
+ * - How does CompletableFuture avoid callback hell?
  *
  * 3. Real-world Use Cases:
- *    - Microservices orchestration
- *    - Parallel API calls
- *    - Database + cache queries in parallel
- *    - Timeout handling with orTimeout()
+ * - Microservices orchestration
+ * - Parallel API calls
+ * - Database + cache queries in parallel
+ * - Timeout handling with orTimeout()
  *
  * 4. Common Pitfalls:
- *    - Not shutting down custom executors
- *    - Blocking operations in async chain
- *    - ForkJoinPool.commonPool() starvation
- *    - Not handling exceptions properly
+ * - Not shutting down custom executors
+ * - Blocking operations in async chain
+ * - ForkJoinPool.commonPool() starvation
+ * - Not handling exceptions properly
  *
  * Key Methods to Know:
  * - supplyAsync/runAsync: Start async computation

@@ -1,4 +1,4 @@
-package com.kowshik;
+package com.kowshik.executors;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -10,41 +10,43 @@ import java.util.concurrent.TimeUnit;
  * INTERVIEW PREP - Key Topics:
  * =============================
  * 1. Why use ExecutorService instead of creating raw threads?
- *    - Thread reuse and pool management
- *    - Reduced overhead of thread creation/destruction
- *    - Better resource management and control
- *    - Queue-based task submission
+ * - Thread reuse and pool management
+ * - Reduced overhead of thread creation/destruction
+ * - Better resource management and control
+ * - Queue-based task submission
  *
  * 2. Common Interview Questions:
- *    - Difference between execute() and submit()?
- *    - Types of thread pools: FixedThreadPool, CachedThreadPool, SingleThreadExecutor, ScheduledThreadPool
- *    - What happens when you submit more tasks than pool size?
- *    - Explain shutdown() vs shutdownNow()
- *    - What is the difference between Runnable and Callable?
- *    - How to handle rejected execution?
- *    - What is ThreadPoolExecutor and its core parameters?
+ * - Difference between execute() and submit()?
+ * - Types of thread pools: FixedThreadPool, CachedThreadPool,
+ * SingleThreadExecutor, ScheduledThreadPool
+ * - What happens when you submit more tasks than pool size?
+ * - Explain shutdown() vs shutdownNow()
+ * - What is the difference between Runnable and Callable?
+ * - How to handle rejected execution?
+ * - What is ThreadPoolExecutor and its core parameters?
  *
  *
  * 3. Key Differences:
- *    execute(): From Executor interface, returns void, accepts only Runnable
- *    submit(): From ExecutorService, returns Future<?>, accepts Runnable or Callable
+ * execute(): From Executor interface, returns void, accepts only Runnable
+ * submit(): From ExecutorService, returns Future<?>, accepts Runnable or
+ * Callable
  *
  * 4. Thread Pool Types:
- *    - newFixedThreadPool(n): Fixed number of threads, unbounded queue
- *    - newCachedThreadPool(): Creates threads as needed, reuses idle threads
- *    - newSingleThreadExecutor(): Single worker thread, sequential execution
- *    - newScheduledThreadPool(n): For delayed/periodic task execution
+ * - newFixedThreadPool(n): Fixed number of threads, unbounded queue
+ * - newCachedThreadPool(): Creates threads as needed, reuses idle threads
+ * - newSingleThreadExecutor(): Single worker thread, sequential execution
+ * - newScheduledThreadPool(n): For delayed/periodic task execution
  *
  * 5. Best Practices:
- *    - Always shutdown executor service
- *    - Use awaitTermination() to wait for tasks to complete
- *    - Handle InterruptedException properly
- *    - Consider custom ThreadPoolExecutor for fine-grained control
+ * - Always shutdown executor service
+ * - Use awaitTermination() to wait for tasks to complete
+ * - Handle InterruptedException properly
+ * - Consider custom ThreadPoolExecutor for fine-grained control
  *
  * 6. Common Pitfalls:
- *    - Forgetting to shutdown executor (app won't terminate)
- *    - Not handling exceptions in submitted tasks
- *    - Using unbounded queues leading to OOM
+ * - Forgetting to shutdown executor (app won't terminate)
+ * - Not handling exceptions in submitted tasks
+ * - Using unbounded queues leading to OOM
  */
 public class ExecutorServiceDemo {
 

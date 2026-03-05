@@ -1,4 +1,4 @@
-package com.kowshik;
+package com.kowshik.executors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,39 +12,39 @@ import java.util.concurrent.atomic.AtomicInteger;
  * INTERVIEW PREP - Key Topics:
  * =============================
  * 1. ThreadPoolExecutor Parameters:
- *    - corePoolSize: Minimum number of threads to keep alive
- *    - maximumPoolSize: Maximum number of threads allowed
- *    - keepAliveTime: Time idle threads wait before termination
- *    - workQueue: Queue to hold tasks before execution
- *    - threadFactory: Factory for creating new threads
- *    - rejectedExecutionHandler: Handler for rejected tasks
+ * - corePoolSize: Minimum number of threads to keep alive
+ * - maximumPoolSize: Maximum number of threads allowed
+ * - keepAliveTime: Time idle threads wait before termination
+ * - workQueue: Queue to hold tasks before execution
+ * - threadFactory: Factory for creating new threads
+ * - rejectedExecutionHandler: Handler for rejected tasks
  *
  * 2. Common Interview Questions:
- *    - Explain ThreadPoolExecutor parameters
- *    - When does pool create new threads beyond core size?
- *    - Different types of blocking queues?
- *    - Rejection policies and when each is used?
- *    - How to monitor thread pool health?
- *    - What is thread pool saturation?
+ * - Explain ThreadPoolExecutor parameters
+ * - When does pool create new threads beyond core size?
+ * - Different types of blocking queues?
+ * - Rejection policies and when each is used?
+ * - How to monitor thread pool health?
+ * - What is thread pool saturation?
  *
  * 3. Rejection Policies:
- *    - AbortPolicy: Throws RejectedExecutionException (default)
- *    - CallerRunsPolicy: Runs task in caller thread (backpressure)
- *    - DiscardPolicy: Silently discards task
- *    - DiscardOldestPolicy: Discards oldest task in queue
+ * - AbortPolicy: Throws RejectedExecutionException (default)
+ * - CallerRunsPolicy: Runs task in caller thread (backpressure)
+ * - DiscardPolicy: Silently discards task
+ * - DiscardOldestPolicy: Discards oldest task in queue
  *
  * 4. Monitoring Metrics:
- *    - Active thread count
- *    - Queue size
- *    - Completed task count
- *    - Pool size
+ * - Active thread count
+ * - Queue size
+ * - Completed task count
+ * - Pool size
  *
  * 5. Best Practices:
- *    - Choose appropriate queue type and size
- *    - Monitor pool statistics
- *    - Set meaningful thread names
- *    - Handle rejected tasks appropriately
- *    - Shutdown gracefully
+ * - Choose appropriate queue type and size
+ * - Monitor pool statistics
+ * - Set meaningful thread names
+ * - Handle rejected tasks appropriately
+ * - Shutdown gracefully
  *
  * Demonstrates implementation of a custom thread pool with:
  * - Custom thread factory with naming
@@ -62,12 +62,12 @@ public class CustomThreadPoolDemo {
         private final ConcurrentHashMap<String, Long> taskExecutionTimes = new ConcurrentHashMap<>();
 
         public MonitoredThreadPool(int corePoolSize,
-                                 int maximumPoolSize,
-                                 long keepAliveTime,
-                                 TimeUnit unit,
-                                 BlockingQueue<Runnable> workQueue,
-                                 ThreadFactory threadFactory,
-                                 RejectedExecutionHandler handler) {
+                int maximumPoolSize,
+                long keepAliveTime,
+                TimeUnit unit,
+                BlockingQueue<Runnable> workQueue,
+                ThreadFactory threadFactory,
+                RejectedExecutionHandler handler) {
             super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory, handler);
         }
 
@@ -100,10 +100,10 @@ public class CustomThreadPoolDemo {
          */
         public void printStatistics() {
             logger.info("Pool Statistics - Submitted: {}, Completed: {}, Active: {}, Queue Size: {}",
-                totalTasksSubmitted.get(),
-                totalTasksCompleted.get(),
-                getActiveCount(),
-                getQueue().size());
+                    totalTasksSubmitted.get(),
+                    totalTasksCompleted.get(),
+                    getActiveCount(),
+                    getQueue().size());
         }
     }
 
@@ -131,7 +131,7 @@ public class CustomThreadPoolDemo {
         @Override
         public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
             logger.warn("Task rejected: {}. Queue size: {}, Active threads: {}",
-                r, executor.getQueue().size(), executor.getActiveCount());
+                    r, executor.getQueue().size(), executor.getActiveCount());
 
             // Attempt to run the task in the caller's thread as a fallback
             if (!executor.isShutdown()) {
@@ -155,14 +155,13 @@ public class CustomThreadPoolDemo {
         CustomRejectionHandler rejectionHandler = new CustomRejectionHandler();
 
         MonitoredThreadPool executor = new MonitoredThreadPool(
-            corePoolSize,
-            maxPoolSize,
-            keepAliveTime,
-            TimeUnit.SECONDS,
-            workQueue,
-            threadFactory,
-            rejectionHandler
-        );
+                corePoolSize,
+                maxPoolSize,
+                keepAliveTime,
+                TimeUnit.SECONDS,
+                workQueue,
+                threadFactory,
+                rejectionHandler);
 
         // Submit some example tasks
         for (int i = 0; i < 10; i++) {

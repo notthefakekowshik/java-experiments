@@ -1,4 +1,4 @@
-package com.kowshik;
+package com.kowshik.locks;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,36 +16,50 @@ import java.util.concurrent.atomic.AtomicInteger;
  * INTERVIEW PREP - Key Topics:
  * =============================
  * 1. What is StampedLock?
- *    - A lock with three modes: writing, reading, and optimistic reading.
- *    - It returns a "stamp" (a long value) that is used to validate locks or unlock.
- *    - Not reentrant. A thread cannot acquire the same lock twice.
+ * - A lock with three modes: writing, reading, and optimistic reading.
+ * - It returns a "stamp" (a long value) that is used to validate locks or
+ * unlock.
+ * - Not reentrant. A thread cannot acquire the same lock twice.
  *
  * 2. StampedLock vs. ReadWriteLock:
- *    - StampedLock offers an "optimistic read" mode, which is very fast but doesn't block writers.
- *    - ReadWriteLock can lead to writer starvation if there are many readers. StampedLock's design can offer better throughput in read-heavy scenarios.
- *    - StampedLock is more complex to use correctly.
+ * - StampedLock offers an "optimistic read" mode, which is very fast but
+ * doesn't block writers.
+ * - Writer Starvation Prevention: In ReadWriteLock, a continuous stream of
+ * readers can indefinitely block a waiting writer (writer starvation).
+ * StampedLock's optimistic reads avoid this completely because they do not
+ * acquire an actual lock and thus never block writers.
+ * - StampedLock's design can offer significantly better throughput and prevent
+ * writer starvation in read-heavy scenarios.
+ * - StampedLock is more complex to use correctly.
  *
  * 3. Three Modes of Operation:
- *    - `writeLock()`: Exclusive lock. Blocks all other threads. Returns a stamp for unlocking.
- *    - `readLock()`: Non-exclusive lock. Blocks writers but allows other readers. Returns a stamp for unlocking.
- *    - `tryOptimisticRead()`: Returns a non-zero stamp if no write lock is held. This is not a real lock. You must validate it with `validate(stamp)` after reading.
+ * - `writeLock()`: Exclusive lock. Blocks all other threads. Returns a stamp
+ * for unlocking.
+ * - `readLock()`: Non-exclusive lock. Blocks writers but allows other readers.
+ * Returns a stamp for unlocking.
+ * - `tryOptimisticRead()`: Returns a non-zero stamp if no write lock is held.
+ * This is not a real lock. You must validate it with `validate(stamp)` after
+ * reading.
  *
  * 4. Optimistic Reading Flow:
- *    a. Call `tryOptimisticRead()` to get a stamp.
- *    b. Read the shared variables.
- *    c. Call `validate(stamp)` to check if a write happened while you were reading.
- *    d. If validation fails, it means the data is dirty. You must then acquire a full read lock (`readLock()`) and read the data again.
+ * a. Call `tryOptimisticRead()` to get a stamp.
+ * b. Read the shared variables.
+ * c. Call `validate(stamp)` to check if a write happened while you were
+ * reading.
+ * d. If validation fails, it means the data is dirty. You must then acquire a
+ * full read lock (`readLock()`) and read the data again.
  *
  * 5. Best Practices:
- *    - Use optimistic reads for very short, read-only operations where contention is expected to be low.
- *    - Always check the stamp from `tryOptimisticRead()` and `validate()` it.
- *    - The stamp is required for unlocking, so don't lose it.
- *    - StampedLock is not reentrant. Be careful not to cause deadlocks.
+ * - Use optimistic reads for very short, read-only operations where contention
+ * is expected to be low.
+ * - Always check the stamp from `tryOptimisticRead()` and `validate()` it.
+ * - The stamp is required for unlocking, so don't lose it.
+ * - StampedLock is not reentrant. Be careful not to cause deadlocks.
  *
  * 6. Common Pitfalls:
- *    - Forgetting to validate an optimistic read stamp.
- *    - Using the result of an optimistic read when validation fails.
- *    - Trying to acquire a lock reentrantly.
+ * - Forgetting to validate an optimistic read stamp.
+ * - Using the result of an optimistic read when validation fails.
+ * - Trying to acquire a lock reentrantly.
  */
 public class StampedLockDemo {
     private static final Logger log = LoggerFactory.getLogger(StampedLockDemo.class);
@@ -115,6 +129,7 @@ public class StampedLockDemo {
 
         ThreadFactory readerThreadFactory = new ThreadFactory() {
             private final AtomicInteger threadNumber = new AtomicInteger(1);
+
             @Override
             public Thread newThread(Runnable r) {
                 return new Thread(r, "reader-thread-" + threadNumber.getAndIncrement());
