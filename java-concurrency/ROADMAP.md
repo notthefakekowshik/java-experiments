@@ -153,6 +153,28 @@ Solve these to validate understanding of synchronization primitives under interv
 
 ---
 
+---
+
+## Phase 5 — JVM Internals: Garbage Collector
+
+Understanding GC separates Java developers from Java engineers. GC pauses, memory leaks, and heap tuning are common in senior interviews and production incidents.
+
+| File | What it covers |
+|---|---|
+| `gc/GCRootsDemo.java` | Reachability tracing; GC roots (static fields, thread stacks); circular references; why ref-counting fails; object resurrection via finalize() |
+| `gc/ReferenceTypesDemo.java` | Strong, Soft, Weak, Phantom references; `WeakHashMap`; `ReferenceQueue`; `Cleaner` API (modern `finalize()` replacement) |
+| `gc/MemoryLeakPatternsDemo.java` | 5 classic leak patterns: static collection, unregistered listeners, ThreadLocal in thread pools, inner class holding outer, missing equals/hashCode |
+| `gc/GCMonitoringDemo.java` | `GarbageCollectorMXBean`; `MemoryPoolMXBean`; GC notification listener; measuring GC overhead %; heap dump flags |
+
+**Theory:** `gc/GC_Theory.md`
+
+**GC Algorithms covered in theory:** Serial → Parallel → G1 (default) → ZGC → Shenandoah
+**Key flags in theory:** `-Xms`, `-Xmx`, `-XX:+UseZGC`, `-Xlog:gc*`, `-XX:+HeapDumpOnOutOfMemoryError`
+
+**Interview checkpoint:** Explain the difference between Minor GC and Full GC. What are the four GC root types? What is a memory leak in Java and how would you diagnose one?
+
+---
+
 ## Quick Revision Map (Before an Interview)
 
 **60-minute refresh:**
