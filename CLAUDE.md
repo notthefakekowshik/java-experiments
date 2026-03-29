@@ -27,16 +27,23 @@ mvn test -Dtest=TestObjectMapper#testJacksonMapNullBehavior
 This is a Maven multi-module project (`com.kowshik:java-experiments`, Java 21) with two modules:
 
 ### `java-concurrency`
-Runnable demonstration classes (each with a `main()` method) covering:
-- **Synchronization & Locks:** `SynchronizationDemo`, `LockDemo`, `ReentrantLockDemo`, `ReadWriteLockDemo`, `StampedLockDemo`, `ConditionDemo`
-- **Atomic & Volatile:** `AtomicVariablesDemo`, `VolatileDemo`
-- **Coordination primitives:** `CountDownLatchDemo`, `CyclicBarrierDemo`, `SemaphoreDemo`
-- **Executors & async:** `ExecutorServiceDemo`, `CustomThreadPoolDemo`, `ForkJoinPoolDemo`, `CompletebleFutureDemo`
-- **Concurrent collections:** `ConcurrentHashMapDemo`, `ConcurrentSkipListMapDemo`, `ConcurrentCacheDemo`
-- **Real-world patterns:** `ProducerConsumerDemo`, `ParallelWebCrawlerDemo`, `RateLimiter`, `DataPipelineBarrierDemo`, `DistributedTaskSchedulerDemo`
-- **LeetCode-style problems** in `com.leetcodeconcurrency`: `PrintOrder`, `PrintOrderSemaphore`
+Fully phased concurrency prep repo. See `java-concurrency/ROADMAP.md` for the learning path and `INSTRUCTIONS.md` for navigation. All demos run via `main()` — no JUnit tests. Uses SLF4J + Logback.
 
-No JUnit tests — all demos run via `main()`. Uses SLF4J + Logback for logging (configured in `src/main/resources/logback.xml`).
+Package structure under `com.kowshik`:
+
+| Package | Contents |
+|---|---|
+| `threads/` | `ThreadCreationDemo`, `ThreadLifecycleDemo`, `ThreadLocalDemo`, `Threads_Theory.md` |
+| `synchronization/` | `SynchronizationDemo`, `VolatileDemo`, `ConditionDemo`, `DeadlockDemo`, `Synchronization_Theory.md` |
+| `locks/` | `LockDemo`, `ReentrantLockDemo`, `ReadWriteLockDemo`, `StampedLockDemo`, `Locks_Theory.md` |
+| `atomics/` | `AtomicVariablesDemo`, `CASDemo`, `Atomics_Theory.md` |
+| `coordination/` | `CountDownLatchDemo`, `CyclicBarrierDemo`, `SemaphoreDemo`, `PhaserDemo`, `ExchangerDemo`, `Coordination_Theory.md` |
+| `executors/` | `ExecutorServiceDemo`, `CustomThreadPoolDemo`, `ForkJoinPoolDemo`, `ThreadFactoryDemo`, `Executors_Theory.md`, `BlockingQueue_Theory.md` |
+| `future/` | `CompletebleFutureDemo`, `CompletableFutureRunAsyncPrac`, `CompletableFutureSupplyAsyncPrac`, `Future_CompletableFuture_Theory.md` |
+| `collections/` | `ConcurrentHashMapDemo`, `ConcurrentSkipListMapDemo`, `Collections_Theory.md` |
+| `patterns/` | `ProducerConsumerDemo`, `RateLimiter`, `ConcurrentCacheDemo`, `DataPipelineBarrierDemo`, `Patterns_Theory.md` |
+| `advanced/` | `VirtualThreadsDemo`, `ParallelWebCrawlerDemo`, `DistributedTaskSchedulerDemo`, `Advanced_Theory.md` |
+| `com.leetcodeconcurrency` | LeetCode problems organized under `Design*/` sub-packages |
 
 ### `vanilla-java`
 Core Java concepts with JUnit 5 tests:
@@ -50,5 +57,5 @@ Dependencies: Jackson 2.15.4, JUnit Jupiter 5.10.0.
 
 ## Key Notes
 
-- Concurrency demos are standalone `main()` programs, not unit tests. To run one, execute the class directly from an IDE or with `mvn exec:java -pl java-concurrency -Dexec.mainClass=com.kowshik.XxxDemo`.
-- Reference notes for concurrency concepts live in `java-concurrency/src/main/resources/notes.md` and `java-concurrency/CONCURRENCY_TODO.md`.
+- Concurrency demos are standalone `main()` programs. Run with `mvn exec:java -pl java-concurrency -Dexec.mainClass=com.kowshik.threads.ThreadCreationDemo` (adjust package + class as needed).
+- Theory for each topic lives in its package `*_Theory.md`. Master roadmap: `java-concurrency/ROADMAP.md`.
