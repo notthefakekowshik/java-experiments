@@ -1,4 +1,4 @@
-package com.kowshik;
+package com.kowshik.locks;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +28,14 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * - Configuration data (frequent reads, rare updates)
  * - Shared data structures with read-heavy workloads
  * - Resource registries
+ *
+ * Writer Starvation:
+ * - Occurs when a continuous stream of readers acquire the read lock.
+ * - Because readers don't block other readers, a waiting writer can be delayed
+ * indefinitely.
+ * - ReentrantReadWriteLock can be configured with a fairness policy (fair=true)
+ * to prevent this by granting locks in arrival order, though it may reduce
+ * overall throughput.
  */
 public class ReadWriteLockDemo {
 
@@ -43,6 +51,11 @@ public class ReadWriteLockDemo {
 
         // Demo 2: Cache implementation
         cacheDemo();
+
+        Thread.sleep(2000);
+
+        // Demo 3: Writer Starvation
+        writerStarvationDemo();
     }
 
     /**
@@ -111,6 +124,68 @@ public class ReadWriteLockDemo {
 
         executor.shutdown();
         executor.awaitTermination(10, TimeUnit.SECONDS);
+    }
+
+    /**
+     * Demo 3: Demonstrates Writer Starvation
+     * A continuous stream of readers can block a writer indefinitely
+     * if the ReadWriteLock is not fair.
+     */
+    private static void writerStarvationDemo() throws InterruptedException {
+        logger.info("Demo 3: Writer Starvation Demonstration");
+
+        // Non-fair lock allows readers to jump ahead of a waiting writer
+        ReadWriteLock lock = new ReentrantReadWriteLock(false);
+        ExecutorService executor = Executors.newCachedThreadPool();
+
+        // 1. Start a fleet of readers that constantly acquire and release the read lock
+        for (int i = 0; i < 10; i++) {
+            executor.submit(() -> {
+                while (!Thread.currentThread().isInterrupted()) {
+                    lock.readLock().lock();
+                    try {
+                        Thread.sleep(10); // Hold lock to overlap with other readers
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        break;
+                    } finally {
+                        lock.readLock().unlock();
+                    }
+                }
+            });
+        }
+
+        // Give readers a moment to start overlapping
+        Thread.sleep(100);
+
+        logger.info("Writer trying to acquire write lock...");
+        long startTime = System.currentTimeMillis();
+
+        // 2. Start a single writer
+        Thread writerThread = new Thread(() -> {
+            lock.writeLock().lock();
+            try {
+                long waitTime = System.currentTimeMillis() - startTime;
+                logger.info("Writer FINALLY acquired lock after {} ms!", waitTime);
+            } finally {
+                lock.writeLock().unlock();
+            }
+        });
+
+        writerThread.start();
+
+        // Wait up to 2 seconds to see if the writer gets the lock
+        writerThread.join(2000);
+
+        if (writerThread.isAlive()) {
+            logger.warn("Writer is STILL waiting after {} ms! This is WRITER STARVATION.",
+                    (System.currentTimeMillis() - startTime));
+            writerThread.interrupt(); // Clean up the waiting writer
+        }
+
+        executor.shutdownNow();
+        executor.awaitTermination(2, TimeUnit.SECONDS);
+        logger.info("");
     }
 
     /**

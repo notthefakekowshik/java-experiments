@@ -1,4 +1,4 @@
-package com.kowshik;
+package com.kowshik.locks;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,51 +13,51 @@ import java.util.concurrent.locks.ReentrantLock;
  * INTERVIEW PREP - Key Topics:
  * =============================
  * 1. What is ReentrantLock and when to use it over synchronized?
- *    - More flexible than synchronized keyword
- *    - Explicit lock/unlock (must use try-finally!)
- *    - Supports timed lock attempts (tryLock with timeout)
- *    - Supports interruptible lock acquisition
- *    - Fair lock option to prevent thread starvation
+ * - More flexible than synchronized keyword
+ * - Explicit lock/unlock (must use try-finally!)
+ * - Supports timed lock attempts (tryLock with timeout)
+ * - Supports interruptible lock acquisition
+ * - Fair lock option to prevent thread starvation
  *
  * 2. Common Interview Questions:
- *    - ReentrantLock vs synchronized keyword?
- *    - What is a reentrant lock? (Can be acquired multiple times by same thread)
- *    - Explain fair vs non-fair locks
- *    - Why use try-finally with ReentrantLock?
- *    - What is tryLock() and when to use it?
- *    - Can you check if lock is held? (isHeldByCurrentThread())
- *    - What is lockInterruptibly()?
+ * - ReentrantLock vs synchronized keyword?
+ * - What is a reentrant lock? (Can be acquired multiple times by same thread)
+ * - Explain fair vs non-fair locks
+ * - Why use try-finally with ReentrantLock?
+ * - What is tryLock() and when to use it?
+ * - Can you check if lock is held? (isHeldByCurrentThread())
+ * - What is lockInterruptibly()?
  *
  * 3. ReentrantLock vs synchronized:
- *    synchronized:
- *    - Simple, less code
- *    - Automatic lock release
- *    - Block scoped
- *    - No tryLock, no timeout
+ * synchronized:
+ * - Simple, less code
+ * - Automatic lock release
+ * - Block scoped
+ * - No tryLock, no timeout
  *
- *    ReentrantLock:
- *    - More control and flexibility
- *    - Manual lock/unlock
- *    - Can span methods
- *    - tryLock(), tryLock(timeout), lockInterruptibly()
- *    - Fair lock option
+ * ReentrantLock:
+ * - More control and flexibility
+ * - Manual lock/unlock
+ * - Can span methods
+ * - tryLock(), tryLock(timeout), lockInterruptibly()
+ * - Fair lock option
  *
  * 4. Fair vs Non-Fair Locks:
- *    - Fair: FIFO order, prevents starvation, lower throughput
- *    - Non-Fair (default): Better throughput, possible starvation
+ * - Fair: FIFO order, prevents starvation, lower throughput
+ * - Non-Fair (default): Better throughput, possible starvation
  *
  * 5. Best Practices:
- *    - Always use try-finally pattern
- *    - Lock in try block, unlock in finally
- *    - Don't forget to unlock!
- *    - Use tryLock() to avoid deadlocks
- *    - Consider lock fairness requirements
+ * - Always use try-finally pattern
+ * - Lock in try block, unlock in finally
+ * - Don't forget to unlock!
+ * - Use tryLock() to avoid deadlocks
+ * - Consider lock fairness requirements
  *
  * 6. Common Pitfalls:
- *    - Forgetting to unlock (memory leak, deadlock)
- *    - Not using try-finally
- *    - Catching Exception between lock and unlock
- *    - Calling unlock() without lock()
+ * - Forgetting to unlock (memory leak, deadlock)
+ * - Not using try-finally
+ * - Catching Exception between lock and unlock
+ * - Calling unlock() without lock()
  */
 public class ReentrantLockDemo {
     private static final Logger log = LoggerFactory.getLogger(ReentrantLockDemo.class);

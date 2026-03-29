@@ -1,4 +1,4 @@
-package com.leetcodeconcurrency;
+package com.leetcodeconcurrency.DesignPrintInOrder;
 
 import java.util.concurrent.Semaphore;
 import java.util.function.Consumer;
@@ -51,7 +51,9 @@ class FooSemaphoreBruteForce {
 
     public void second(Runnable printSecond) throws InterruptedException {
         // printSecond.run() outputs "second". Do not change or remove this line.
-        run2.acquire(); // this has acquired the run2 semaphore, no one else can take this semaphore. No one else claims the run2 semaphore. That's how our code is written and that's how it should be written.
+        run2.acquire(); // this has acquired the run2 semaphore, no one else can take this semaphore. No
+                        // one else claims the run2 semaphore. That's how our code is written and that's
+                        // how it should be written.
         printSecond.run();
         run3.release();
     }
@@ -64,13 +66,13 @@ class FooSemaphoreBruteForce {
     }
 }
 
-
 public class PrintOrderSemaphore {
 
     public static void main(String[] args) {
         Consumer<String> printCosumer = (message) -> System.out.println(message);
 
-        // Threads can't be started again which are done executing, so, you need to create them again.
+        // Threads can't be started again which are done executing, so, you need to
+        // create them again.
         // That's the reason for putting loop around creation but not starting.
         int counter = 3;
         while (counter-- > 0) {
@@ -104,14 +106,14 @@ public class PrintOrderSemaphore {
             threadB.start();
             threadA.start();
 
-//            // Wait for threads to finish before the next iteration
-//            try {
-//                threadA.join();
-//                threadB.join();
-//                threadC.join();
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
+            // // Wait for threads to finish before the next iteration
+            // try {
+            // threadA.join();
+            // threadB.join();
+            // threadC.join();
+            // } catch (InterruptedException e) {
+            // e.printStackTrace();
+            // }
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.leetcodeconcurrency;
+package com.leetcodeconcurrency.DesignPrintInOrder;
 
 import java.util.concurrent.CountDownLatch;
 

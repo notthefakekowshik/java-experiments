@@ -42,20 +42,20 @@ public class AtomicVariablesDemo {
         // Demo 1: AtomicInteger vs regular int
         compareAtomicVsRegularDemo();
 
-        Thread.sleep(1000);
+        // Thread.sleep(1000);
 
-        // Demo 2: Various atomic operations
-        atomicOperationsDemo();
+        // // Demo 2: Various atomic operations
+        // atomicOperationsDemo();
 
-        Thread.sleep(1000);
+        // Thread.sleep(1000);
 
-        // Demo 3: AtomicReference
-        atomicReferenceDemo();
+        // // Demo 3: AtomicReference
+        // atomicReferenceDemo();
 
-        Thread.sleep(1000);
+        // Thread.sleep(1000);
 
-        // Demo 4: LongAdder for high contention
-        longAdderDemo();
+        // // Demo 4: LongAdder for high contention
+        // longAdderDemo();
     }
 
     /**
@@ -164,9 +164,8 @@ public class AtomicVariablesDemo {
 
         executor.submit(() -> {
             currentUser.accumulateAndGet(
-                new User("Charlie", 30),
-                (old, update) -> new User(update.name, old.age)
-            );
+                    new User("Charlie", 30),
+                    (old, update) -> new User(update.name, old.age));
             logger.info("Thread 3: Changed name to Charlie");
         });
 
