@@ -1,9 +1,8 @@
-package DS.Heaps;
+package com.kowshik.HEAPS;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.PriorityQueue;
 
 /**
  * A Min-Heap implementation from scratch, as would be expected in
@@ -29,8 +28,9 @@ public class MinHeapFromScratch {
 
     /**
      * Returns the number of elements in the heap.
+     * 
      * @return the size of the heap.
-     * Time Complexity: O(1)
+     *         Time Complexity: O(1)
      */
     public int size() {
         return heap.size();
@@ -38,8 +38,9 @@ public class MinHeapFromScratch {
 
     /**
      * Checks if the heap is empty.
+     * 
      * @return true if the heap is empty, false otherwise.
-     * Time Complexity: O(1)
+     *         Time Complexity: O(1)
      */
     public boolean isEmpty() {
         return heap.isEmpty();
@@ -47,9 +48,10 @@ public class MinHeapFromScratch {
 
     /**
      * Returns the minimum element (the root) without removing it.
+     * 
      * @return the minimum element in the heap.
      * @throws NoSuchElementException if the heap is empty.
-     * Time Complexity: O(1)
+     *                                Time Complexity: O(1)
      */
     public int peek() {
         if (isEmpty()) {
@@ -61,8 +63,9 @@ public class MinHeapFromScratch {
 
     /**
      * Adds a new element to the heap, maintaining the heap property.
+     * 
      * @param value the element to add.
-     * Time Complexity: O(log n)
+     *              Time Complexity: O(log n)
      */
     public void add(int value) {
         // 1. Add the element to the very end of the list.
@@ -76,9 +79,10 @@ public class MinHeapFromScratch {
 
     /**
      * Removes and returns the minimum element (the root).
+     * 
      * @return the minimum element in the heap.
      * @throws NoSuchElementException if the heap is empty.
-     * Time Complexity: O(log n)
+     *                                Time Complexity: O(log n)
      */
     public int poll() {
         if (isEmpty()) {
@@ -171,9 +175,17 @@ public class MinHeapFromScratch {
     }
 
     // These formulas are standard for a 0-indexed array representation.
-    private int getLeftChildIndex(int parentIndex) { return 2 * parentIndex + 1; }
-    private int getRightChildIndex(int parentIndex) { return 2 * parentIndex + 2; }
-    private int getParentIndex(int childIndex) { return (childIndex - 1) / 2; }
+    private int getLeftChildIndex(int parentIndex) {
+        return 2 * parentIndex + 1;
+    }
+
+    private int getRightChildIndex(int parentIndex) {
+        return 2 * parentIndex + 2;
+    }
+
+    private int getParentIndex(int childIndex) {
+        return (childIndex - 1) / 2;
+    }
 
     /**
      * A simple main method to test the MinHeap implementation.
@@ -214,4 +226,3 @@ public class MinHeapFromScratch {
         System.out.println("Heap size: " + minHeapFromScratch.size()); // Should be 0
     }
 }
-
