@@ -283,8 +283,11 @@ public class ProducerConsumerDemo {
                 queue.add(item);
                 logger.info("Producer: Added to queue (size now: {})", queue.size());
 
-                // Notify waiting consumers
-                lock.notifyAll(); // Wake up consumers
+                // Notify ALL waiting threads (both consumers and producers)
+                // This is inefficient because it might wake up other producers who
+                // will just check the condition and go back to sleep.
+                // lock is being used by both producer and consumer threads.
+                lock.notifyAll();
             }
         }
 
@@ -303,8 +306,11 @@ public class ProducerConsumerDemo {
                 String item = queue.poll();
                 logger.info("Consumer: Removed from queue (size now: {})", queue.size());
 
-                // Notify waiting producers
-                lock.notifyAll(); // Wake up producers
+                // Notify ALL waiting threads (both producers and consumers)
+                // Ideally we only want to wake up producers, but with a single lock
+                // we wake up everyone.
+                // lock is being used by both producer and consumer threads.
+                lock.notifyAll();
 
                 return item;
             }

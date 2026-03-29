@@ -1,9 +1,8 @@
-package DS.Heaps;
+package com.kowshik.HEAPS;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.PriorityQueue;
 
 /**
  * A Min-Heap implementation from scratch, as would be expected in
@@ -56,7 +55,7 @@ public class MinHeapFromScratch {
             throw new NoSuchElementException("Heap is empty. Cannot peek.");
         }
         // The minimum element is always at the root (index 0).
-        return heap.get(0);
+        return heap.getFirst();
     }
 
     /**
@@ -86,15 +85,15 @@ public class MinHeapFromScratch {
         }
 
         // 1. The root (index 0) is the minimum value. Store it to return later.
-        int minValue = heap.get(0);
+        int minValue = heap.getFirst();
 
         // 2. Take the last element in the heap and move it to the root.
         // This maintains the "complete binary tree" shape.
-        int lastElement = heap.get(heap.size() - 1);
+        int lastElement = heap.getLast();
         heap.set(0, lastElement);
 
         // 3. Remove the last element (which we just moved).
-        heap.remove(heap.size() - 1);
+        heap.removeLast();
 
         // 4. "Bubble down" (or heapifyDown) the new root to its
         // correct position to restore the heap property.
